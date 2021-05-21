@@ -37,7 +37,7 @@
 
 /* Includes ----------------------------------------------------------------- */
 #include <stdint.h>
-
+#include "main.h"
 /** @addtogroup BSP
   * @{
   */
@@ -50,13 +50,13 @@
 /* Exported constants --------------------------------------------------------*/
 /* External variables --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
-#define DEV_SPI SPI
+
 /* set state on SPI_NSS pin */
-#define RFTRANS_95HF_NSS_LOW() 			digitalWrite(10, 0)
-#define RFTRANS_95HF_NSS_HIGH()  		digitalWrite(10, 1)
+#define RFTRANS_95HF_NSS_LOW() 			HAL_GPIO_WritePin(nSPI_SS_GPIO_Port,nSPI_SS_Pin, GPIO_PIN_RESET);
+#define RFTRANS_95HF_NSS_HIGH()  		HAL_GPIO_WritePin(nSPI_SS_GPIO_Port,nSPI_SS_Pin, GPIO_PIN_SET);
 /* set state on IRQ_In pin */
-#define RFTRANS_95HF_IRQIN_LOW() 		digitalWrite(8, 0)	
-#define RFTRANS_95HF_IRQIN_HIGH()		digitalWrite(8, 1)
+#define RFTRANS_95HF_IRQIN_LOW() 		HAL_GPIO_WritePin(nIRQ_IN_GPIO_Port,nSPI_SS_Pin, GPIO_PIN_RESET);	
+#define RFTRANS_95HF_IRQIN_HIGH()		HAL_GPIO_WritePin(nIRQ_IN_GPIO_Port,nSPI_SS_Pin, GPIO_PIN_SET);
 /* Exported functions ------------------------------------------------------- */
 /** @defgroup X_NUCLEO_NFC03A1_Spi_Exported_Functions
   * @{

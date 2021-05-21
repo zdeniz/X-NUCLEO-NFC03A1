@@ -27,9 +27,9 @@
   ******************************************************************************
   */
 
-//#ifdef __cplusplus
-// extern "C" {
-//#endif
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "lib_NDEF_AAR.h"
@@ -181,8 +181,8 @@ uint16_t NDEF_AddAAR( sAARInfo *pAARStruct )
   * @}
   */
 
-//#ifdef __cplusplus
-//}
-//#endif
+#ifdef __cplusplus
+}
+#endif
 
 /******************* (C) COPYRIGHT 2015 STMicroelectronics *****END OF FILE****/

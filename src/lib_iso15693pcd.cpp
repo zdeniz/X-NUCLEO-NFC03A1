@@ -32,7 +32,7 @@
 //#endif
 
 /* Includes ------------------------------------------------------------------------------ */
-#include "Arduino.h"
+#include "stm32l0xx_hal.h"
 #include "lib_iso15693pcd.h"
 
 /* ISO15693 */
@@ -383,7 +383,7 @@ uint8_t		pOneTagResponse [ISO15693_NBBYTE_UID+3+2];
 		
 	while (NthSlot++ <15 )
 	{
-		delay(5);
+		HAL_Delay(5);
 
 		status = ISO15693_SendEOF(pOneTagResponse  );
 
@@ -519,7 +519,7 @@ uint8_t DataToSend[MAX_BUFFER_SIZE],
 		PCD_SendRecv(NthByte,DataToSend,pResponse);
 	else 
 	{	PCD_SendRecv(NthByte,DataToSend,pResponse);
-	 	delay(20);
+	 	HAL_Delay(20);
 		ISO15693_SendEOF (pResponse);
 	}	
 
@@ -1185,7 +1185,7 @@ int8_t ISO15693_RunAntiCollision(const uint8_t Flags , const uint8_t AFI,uint8_t
 		return ISO15693_SUCCESSCODE;
 	}
 
-	delay(10);
+	HAL_Delay(10);
 
 	(*NbTag)=0;	
 

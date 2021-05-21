@@ -72,7 +72,7 @@
 /* Flags for Proprietary P2P tracking  ------------------------------------------------------*/
 #define	PP2P_NOTHING					0x00
 #define	PP2P_INITIATOR_NFCA 	0x01 /* 0000 0001 */
-#define	PP2P_TARGET_NFCA 		0x10 /* 0000 0100 */
+#define	PP2P_TARGET_NFCA 		  0x10 /* 0000 0100 */
 #define PP2P_ALL 							0xFF /* 1111 1111 */
 
 /* Flags for SelectMode  ----------------------------------------------------------*/

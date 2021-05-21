@@ -32,7 +32,8 @@
 //#endif
 
 /* Includes ------------------------------------------------------------------------------ */
-#include "Arduino.h"
+#include "stm32l0xx_hal.h"
+#include "stm32l0xx_it.h"
 #include "lib_iso14443Apcd.h"
 
 extern PCD_PROTOCOL TechnoSelected;
@@ -306,7 +307,9 @@ static int8_t ISO14443A_AC( uint8_t *pDataRead, u8 CascadeLevel )
 				return ISO14443A_ERRORCODE_DEFAULT;
 		}				
 		else
-			return ISO14443A_ERRORCODE_DEFAULT;		
+		{
+			return ISO14443A_ERRORCODE_DEFAULT;
+		}		
 		
 			/* prepare the buffer expected by the caller */
 			pDataRead[0] = 0x80;
@@ -677,7 +680,7 @@ int8_t ISO14443A_Init(void)
 	TechnoSelected = PCDPROTOCOL_14443A;
 	
 	/* GT min time to respect before sending REQ_A */
-	delay(5);
+	HAL_Delay(5);
  
  return ISO14443A_SUCCESSCODE;
 Error:
@@ -922,7 +925,7 @@ void ISO14443A_MultiTagHunting ( uint8_t *pNbTag, uint8_t *pUIDout )
 	RemainingID = 0;
 	*pNbTag = 0;
 	
-	delay(5);
+	HAL_Delay(5);
 		
 	ISO14443A_InitStructure(); /* only initialize structure */
 
@@ -931,7 +934,8 @@ void ISO14443A_MultiTagHunting ( uint8_t *pNbTag, uint8_t *pUIDout )
 		ISO14443A_InitStructure();
 		if(ISO14443A_IsPresent() == RESULTOK)
 		{
-			delayMicroseconds (50);
+			// us_delay(50);
+			HAL_Delay(1);
 			if(ISO14443A_MultiAnticollision() == RESULTOK)
 			{	
 				MultiID[0+((*pNbTag)*11)] = ISO14443A_Card.UIDsize;

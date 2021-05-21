@@ -31,36 +31,38 @@
 #define __MISCELLANEOUS_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
-#include "stdint.h"
 #include "stdbool.h"
+#include "stdint.h"
 #include "string.h"
-	 
-typedef uint32_t  u32;
+
+typedef uint32_t u32;
 typedef uint16_t u16;
-typedef uint8_t  u8;
+typedef uint8_t u8;
 
-typedef const uint32_t uc32;  /*!< Read Only */
-typedef const uint16_t uc16;  /*!< Read Only */
-typedef const uint8_t  uc8;   /*!< Read Only */
+typedef const uint32_t uc32; /*!< Read Only */
+typedef const uint16_t uc16; /*!< Read Only */
+typedef const uint8_t uc8;   /*!< Read Only */
 
-	 
-#define MAX(x,y) 				((x > y)? x : y)
-#define MIN(x,y) 				((x < y)? x : y)  
-#define ABS(x) 					((x)>0 ? (x) : -(x))  
-#define CHECKVAL(val, min,max) 	((val < min || val > max) ? false : true) 
-	 
-#define GETMSB(val) 		((val & 0xFF00 )>>8 ) 
-#define GETLSB(val) 		( val & 0x00FF ) 
- 
-#define RESULTOK 							0x00 
-#define ERRORCODE_GENERIC 		1 
+#define MAX(x, y) ((x > y) ? x : y)
+#define MIN(x, y) ((x < y) ? x : y)
+#define ABS(x) ((x) > 0 ? (x) : -(x))
+#define CHECKVAL(val, min, max) ((val < min || val > max) ? false : true)
+
+#define GETMSB(val) ((val & 0xFF00) >> 8)
+#define GETLSB(val) (val & 0x00FF)
+
+#define RESULTOK 0x00
+#define ERRORCODE_GENERIC 1
 
 #ifndef errchk
-#define errchk(fCall) if (status = (fCall), status != RESULTOK) \
-	{goto Error;} else
+#define errchk(fCall)                           \
+    if (status = (fCall), status != RESULTOK) { \
+        goto Error;                             \
+    } else {                                    \
+    }
 #endif
 
 #ifdef __cplusplus

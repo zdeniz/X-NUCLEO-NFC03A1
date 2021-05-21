@@ -32,7 +32,7 @@
 //#endif
 
 /* Includes ------------------------------------------------------------------------------ */
-#include "Arduino.h"
+#include "stm32l0xx_hal.h"
 #include "lib_nfctype2pcd.h"
 
 extern uint8_t TT2Tag[];
@@ -309,7 +309,7 @@ uint8_t PCDNFCT2_WriteNDEF( void )
 	{
 		errchk(PCDNFCT2_Write(i, &buffer[i*4]));
 		// Tag from NXP needs this delay...
-		delay(5);
+		HAL_Delay(5);
 	}
 	
 	// Write the size (numBloc = (NDEFposition+1)>>2)

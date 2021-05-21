@@ -28,7 +28,8 @@
   */ 
   
 /* Includes ------------------------------------------------------------------------------ */
-#include "Arduino.h"
+#include "stm32l0xx_hal.h"
+#include "stm32l0xx_it.h"
 #include "lib_iso18092pcd.h"
 
 /* Felica */
@@ -100,8 +101,8 @@ static int8_t FELICA_Init( uint8_t *pDataRead )
 	errchk(PCD_WriteRegister    ( 0x04,0x0A,0x01,AutoFDet,pDataRead)); 
 	
 	/* GT min time to respect before sending REQ_C */
-	delay(20);
-	delayMicroseconds(400);
+	HAL_Delay(21);
+	// us_delay(400);
 
 	return ISO18092_SUCCESSCODE;
 Error:

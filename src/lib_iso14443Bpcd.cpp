@@ -32,7 +32,7 @@
 //#endif
 
 /* Includes ------------------------------------------------------------------------------ */
-#include "Arduino.h"
+#include "stm32l0xx_it.h"
 #include "lib_iso14443Bpcd.h"
 
 /* ISO14443B */
@@ -236,7 +236,8 @@ int8_t ISO14443B_Init( void )
 	errchk(ISO14443B_WriteAndCheckARConfigB ());
 														
 	/* GT min time to respect before sending REQ_B */
-	delayMicroseconds(5100);	
+	// us_delay(5100);	
+	HAL_Delay(6);	
 
 	return ISO14443B_SUCCESSCODE;
 Error:

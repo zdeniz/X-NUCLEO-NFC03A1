@@ -33,7 +33,8 @@
 //#endif
 
 /* Includes ------------------------------------------------------------------------------ */
-#include "SPI.h"
+#include "stm32l0xx_hal.h"
+#include "spi.h"
 #include "stdbool.h"
 #include "drv_95HF.h"
 #include "lib_pcd.h"
@@ -123,16 +124,16 @@ static int8_t drv95HF_SPIPollingCommand( void )
   
   if(EnableTimeOut)
   {
-	timestamp_start = millis();
+	timestamp_start = HAL_GetTick();
   }
 
-  DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
+  // DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
 
   do
   {
     /* Low level on NSS  */
     RFTRANS_95HF_NSS_LOW();
-    delay(2);
+    HAL_Delay(2);
       
     /*  poll the 95HF transceiver until he's ready ! */
     Polling_Status  = SPI_SendReceiveByte(RFTRANS_95HF_COMMAND_POLLING);
@@ -140,7 +141,7 @@ static int8_t drv95HF_SPIPollingCommand( void )
 	if(EnableTimeOut)
     {
       /* 3sec for LLCP can be improved to adjust it dynamically */
-      timestamp_final = millis();
+      timestamp_final = HAL_GetTick();
       if((timestamp_final - timestamp_start) > 3000)
 	  {
         uTimeOut = true;
@@ -152,7 +153,7 @@ static int8_t drv95HF_SPIPollingCommand( void )
   /* High level on NSS  */
   RFTRANS_95HF_NSS_HIGH();
 
-  DEV_SPI.endTransaction();
+  // DEV_SPI.endTransaction();
   
   if ( uTimeOut == true )
   {
@@ -194,9 +195,9 @@ void drv95HF_ResetSPI(void)
 {	
   /* Deselect Rftransceiver over SPI */
   RFTRANS_95HF_NSS_HIGH();
-  delay(1);
+  HAL_Delay(1);
   
-  DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
+  // DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
   /* Select 95HF device over SPI */
   RFTRANS_95HF_NSS_LOW();
   /* Send reset control byte	*/
@@ -204,12 +205,12 @@ void drv95HF_ResetSPI(void)
   /* Deselect 95HF device over SPI */
   RFTRANS_95HF_NSS_HIGH();
   
-  DEV_SPI.endTransaction();
+  // DEV_SPI.endTransaction();
   
-  delay(3);
+  HAL_Delay(3);
   /* send a pulse on IRQ_in*/
   drv95HF_SendIRQINPulse();
-  delay(10);  /* mandatory before issuing a new command */
+  HAL_Delay(10);  /* mandatory before issuing a new command */
   
   drv95HFConfig.uState = RFTRANS_95HF_STATE_READY;
 }
@@ -283,7 +284,7 @@ void drv95HF_SendSPICommand(const uint8_t *pData)
 {
   uint8_t DummyBuffer[MAX_BUFFER_SIZE];
   
-  DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
+  // DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
   
   /* Select xx95HF over SPI */
   RFTRANS_95HF_NSS_LOW();
@@ -305,7 +306,7 @@ void drv95HF_SendSPICommand(const uint8_t *pData)
   /* Deselect xx95HF over SPI  */
   RFTRANS_95HF_NSS_HIGH();
   
-  DEV_SPI.endTransaction();
+  // DEV_SPI.endTransaction();
 }
 
 
@@ -319,7 +320,7 @@ void drv95HF_ReceiveSPIResponse(uint8_t *pData)
 {
   uint8_t DummyBuffer[MAX_BUFFER_SIZE];
 
-  DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
+  // DEV_SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE3));
   
   /* Select 95HF transceiver over SPI */
   RFTRANS_95HF_NSS_LOW();
@@ -355,7 +356,7 @@ void drv95HF_ReceiveSPIResponse(uint8_t *pData)
   /* Deselect xx95HF over SPI */
   RFTRANS_95HF_NSS_HIGH();
   
-  DEV_SPI.endTransaction();
+  // DEV_SPI.endTransaction();
 }
 
 /**
@@ -436,14 +437,14 @@ void drv95HF_SendIRQINPulse(void)
   {
     /* Send a pulse on IRQ_IN */
     RFTRANS_95HF_IRQIN_HIGH() ;
-    delay(1);
+    HAL_Delay(1);
     RFTRANS_95HF_IRQIN_LOW() ;
-    delay(1);
+    HAL_Delay(1);
     RFTRANS_95HF_IRQIN_HIGH() ;
   }
   
   /* Need to wait 10ms after the pulse before to send the first command */
-  delay(10); 
+  HAL_Delay(10); 
 }
 
 /**

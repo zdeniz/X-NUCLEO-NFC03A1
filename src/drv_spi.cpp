@@ -30,8 +30,10 @@
 //#endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "SPI.h"
+#include "spi.h"
 #include "drv_spi.h"
+#include "main.h"
+#include "stdint.h"
 
 /** @addtogroup BSP
  * @{
@@ -57,25 +59,16 @@
  */
 void RFTRANS_SPI_Init(void) 
 {
-  // Configure NSS pin for CR95HF
-  pinMode(10, OUTPUT);
-
-  // Configure interface pin select for CR95HF
-  pinMode(9, OUTPUT);
-  
-  // Configure interrupt input pin for CR95HF
-  pinMode(8, OUTPUT);
-  
   // Set the interface pin select high in order to configure the NFC reader to use the SPI interface
-  digitalWrite(9, HIGH);
-  
+  HAL_GPIO_WritePin(SSI_0_GPIO_Port,SSI_0_Pin, GPIO_PIN_SET);
+
   /* SPI_NSS  = High Level  */
   RFTRANS_95HF_NSS_HIGH();
   
   /* Set signal to high */
   RFTRANS_95HF_IRQIN_HIGH();
 
-  DEV_SPI.begin();
+  MX_SPI1_Init();
 }
 
 /**  
@@ -85,7 +78,9 @@ void RFTRANS_SPI_Init(void)
  */
 uint8_t SPI_SendReceiveByte(uint8_t data) 
 {	
-  return DEV_SPI.transfer(data);
+  uint8_t rx_data = 0;
+  HAL_SPI_TransmitReceive(&hspi1, &data, &rx_data, 1, 1000);
+  return rx_data;
 }
 
 /**
@@ -97,11 +92,7 @@ uint8_t SPI_SendReceiveByte(uint8_t data)
  */
 void SPI_SendReceiveBuffer(const uint8_t *pCommand, uint8_t length, uint8_t *pResponse) 
 {
-  uint8_t i;
-  
-  for(i=0; i<length; i++)
-    pResponse[i] = SPI_SendReceiveByte(pCommand[i]);
-
+  HAL_SPI_TransmitReceive(&hspi1, (uint8_t *)pCommand, pResponse, length, 1000);
 }
 
 /**

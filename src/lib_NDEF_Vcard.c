@@ -27,9 +27,9 @@
   ******************************************************************************
   */
 
-//#ifdef __cplusplus
-// extern "C" {
-//#endif
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "lib_NDEF_Vcard.h"
@@ -382,8 +382,8 @@ void NDEF_PrepareVcardMessage( sVcardInfo *pVcardStruct, uint8_t *pNDEFMessage, 
   * @}
   */
 
-//#ifdef __cplusplus
-//}
-//#endif
+#ifdef __cplusplus
+}
+#endif
 
 /******************* (C) COPYRIGHT 2015 STMicroelectronics *****END OF FILE****/
